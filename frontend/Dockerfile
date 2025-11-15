@@ -1,9 +1,12 @@
-FROM node:20 AS builder
+FROM node:20
 
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
+
+# Configure npm to use strict-ssl=false (development only!)
+RUN npm config set strict-ssl false
 
 # Install dependencies
 RUN npm install
@@ -11,22 +14,8 @@ RUN npm install
 # Copy source files
 COPY . .
 
-# Build argument for API URL
-ARG VITE_API_BASE_URL=http://localhost:8000
-ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+# Expose port
+EXPOSE 5173
 
-# Build the app
-RUN npm run build
-
-# Production stage
-FROM nginx:alpine
-
-# Copy built files to nginx
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Copy nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Start dev server
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
