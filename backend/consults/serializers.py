@@ -65,6 +65,11 @@ class ConsultRequestSerializer(serializers.ModelSerializer):
 class ConsultRequestCreateSerializer(serializers.ModelSerializer):
     """Serializer for creating consults with optional inline patient creation"""
     patient_data = PatientSerializer(required=False, write_only=True)
+    patient = serializers.PrimaryKeyRelatedField(
+        queryset=Patient.objects.all(),
+        required=False,
+        allow_null=True
+    )
     
     class Meta:
         model = ConsultRequest
@@ -72,6 +77,14 @@ class ConsultRequestCreateSerializer(serializers.ModelSerializer):
             'patient', 'patient_data', 'to_department', 'priority', 
             'clinical_summary', 'consult_question'
         ]
+    
+    def validate(self, data):
+        """Ensure either patient or patient_data is provided"""
+        if not data.get('patient') and not data.get('patient_data'):
+            raise serializers.ValidationError(
+                "Either 'patient' or 'patient_data' must be provided."
+            )
+        return data
     
     def create(self, validated_data):
         patient_data = validated_data.pop('patient_data', None)

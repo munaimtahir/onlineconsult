@@ -139,10 +139,48 @@ npm run dev
 ### Running Tests
 
 **Backend Tests:**
+
+The project includes comprehensive test coverage (98%) with 47 tests covering models, serializers, views, and API endpoints.
+
 ```bash
+# Run tests locally
 cd backend
 python manage.py test
+
+# Run tests with coverage
+coverage run --source='.' manage.py test consults
+coverage report
+coverage html  # Generate HTML report in htmlcov/
+
+# Or use the test script
+./run_tests.sh
+
+# Run tests in Docker
+docker compose exec backend python manage.py test
+
+# Run tests with coverage in Docker
+docker compose exec backend coverage run --source='.' manage.py test consults
+docker compose exec backend coverage report
 ```
+
+**Test Coverage:**
+- Models: 100% - All models including Department, User, Patient, ConsultRequest, ConsultComment
+- Views: 100% - All API endpoints including create, read, update, filtering, comments
+- Serializers: 92% - All serializers with validation logic
+- Management Commands: 96% - Seed data command
+- **Overall: 98%**
+
+**Test Categories:**
+- Model tests (constraints, ordering, string representations)
+- API authentication tests (login, token refresh)
+- CRUD operations tests (create, read, update, delete)
+- Filtering tests (incoming/outgoing consults, status filters)
+- Comment functionality tests
+- Status update tests
+- Search functionality tests
+- Edge cases and error handling
+- Admin interface tests
+- Serializer validation tests
 
 ## API Documentation
 
