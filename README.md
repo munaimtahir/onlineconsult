@@ -61,9 +61,10 @@ docker compose up --build
 ```
 
 The application will be available at:
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-- Admin Panel: http://localhost:8000/admin
+- Frontend: http://localhost:3001
+- Backend API: http://localhost:8080
+- Admin Panel: http://localhost:8080/admin
+- PostgreSQL: localhost:54320
 
 ### Default Credentials
 
@@ -83,7 +84,7 @@ The system comes pre-seeded with test users:
 ## User Workflows
 
 ### 1. Login
-- Navigate to http://localhost:3000
+- Navigate to http://localhost:3001
 - Enter username and password
 - Click "Sign in"
 
@@ -243,6 +244,15 @@ onlineconsult/
 └── README.md
 ```
 
+## Port Configuration
+
+This application uses non-standard ports to avoid conflicts with other applications:
+- **Frontend**: Port 3001 (instead of standard 3000)
+- **Backend API**: Port 8080 (instead of standard 8000)
+- **PostgreSQL**: Port 54320 (instead of standard 5432)
+
+CORS is configured to only allow localhost origins for security.
+
 ## Security Notes
 
 - Change the `DJANGO_SECRET_KEY` in production
@@ -250,7 +260,7 @@ onlineconsult/
 - Set `DJANGO_DEBUG=False` in production
 - Configure proper `ALLOWED_HOSTS` in production
 - Use HTTPS in production
-- Implement proper CORS settings for production
+- CORS is restricted to localhost origins only - update `CORS_ALLOWED_ORIGINS` in settings.py for production domains
 
 ## License
 
