@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from consults.models import Department, User, Patient, ConsultRequest, ConsultComment
+from consults.models import Department, User, Patient, ConsultRequest
 
 
 class Command(BaseCommand):
