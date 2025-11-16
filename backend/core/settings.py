@@ -56,8 +56,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# CORS settings (allow all origins for MVP - should be restricted in production)
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS settings - restricted to localhost only
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3001',
+    'http://127.0.0.1:3001',
+]
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'core.urls'
