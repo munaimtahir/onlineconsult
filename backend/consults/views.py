@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
-from .models import Department, User, Patient, ConsultRequest, ConsultComment
+from .models import Department, Patient, ConsultRequest, ConsultComment
 from .serializers import (
     DepartmentSerializer, UserSerializer, PatientSerializer,
     ConsultRequestSerializer, ConsultRequestCreateSerializer, ConsultCommentSerializer
