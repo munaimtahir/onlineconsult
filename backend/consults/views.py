@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 from .models import Department, Patient, ConsultRequest, ConsultComment
 from .serializers import (
-    DepartmentSerializer, UserSerializer, PatientSerializer,
+    DepartmentSerializer, PatientSerializer,
     ConsultRequestSerializer, ConsultRequestCreateSerializer, ConsultCommentSerializer
 )
 
