@@ -30,7 +30,12 @@ class ConsultRequestViewSet(viewsets.ModelViewSet):
     """ViewSet for managing consultation requests"""
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter]
-    search_fields = ['patient__name', 'patient__hospital_id']
+    search_fields = [
+        'patient__name',
+        'patient__hospital_id',
+        'from_department__name',
+        'to_department__name'
+    ]
     
     def get_queryset(self):
         user = self.request.user
