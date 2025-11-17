@@ -35,3 +35,6 @@ dist/
 
 # Docker
 .dockerignore
+
+# Log files
+*.log

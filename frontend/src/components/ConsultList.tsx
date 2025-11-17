@@ -11,17 +11,34 @@ const ConsultList: React.FC<ConsultListProps> = ({ role }) => {
   const [consults, setConsults] = useState<ConsultRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [searchTerm]);
+
+  useEffect(() => {
     loadConsults();
-  }, [role]);
+  }, [role, statusFilter, debouncedSearchTerm]);
 
   const loadConsults = async () => {
     setLoading(true);
     setError('');
     try {
-      const data = await consultsAPI.list({ role });
+      const params = {
+        role,
+        status: statusFilter || undefined,
+        search: debouncedSearchTerm || undefined,
+      };
+      const data = await consultsAPI.list(params);
       setConsults(data.results);
     } catch (err: any) {
       setError('Failed to load consults');
@@ -81,6 +98,30 @@ const ConsultList: React.FC<ConsultListProps> = ({ role }) => {
 
   return (
     <div className="overflow-x-auto">
+      {/* Filters */}
+      <div className="mb-4 flex space-x-4">
+        {/* Status Filter */}
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="border-gray-300 rounded-md"
+        >
+          <option value="">All Statuses</option>
+          <option value="pending">Pending</option>
+          <option value="in_progress">In Progress</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+
+        {/* Search Input */}
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search by patient..."
+          className="border-gray-300 rounded-md w-64"
+        />
+      </div>
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
